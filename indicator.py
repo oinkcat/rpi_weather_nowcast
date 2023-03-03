@@ -3,6 +3,8 @@ import time
 import threading
 import atexit
 import RPi.GPIO as GPIO
+import os
+import random
 
 PIN_GREEN = 37
 PIN_YELLOW = 35
@@ -10,7 +12,8 @@ PIN_RED = 33
 
 ALL_PINS = [PIN_GREEN, PIN_YELLOW, PIN_RED]
 
-UPDATE_INTERVAL = 60
+UPDATE_INTERVAL_MIN = 200
+UPDATE_INTERVAL_MAX = 300
 
 STATE = {
     'pins': [],
@@ -48,6 +51,9 @@ def update_info():
     if nowcast_data is not None:
         now_time = time.strftime('%Y-%m-%d, %H:%M')
         print('[{}] {}'.format(now_time, nowcast_data['raw']))
+        
+        # Oinklog
+        os.system('python3 /home/pi/projects/oinklog_client.py "NC: {}"'.format(nowcast_data['raw']))
 
         info = nowcast_data['info']
         STATE['blinking'] = info['going']
@@ -63,8 +69,9 @@ def update_info():
 
     STATE['change'] = True
 
-    # Re-run after 1 minute
-    timer = threading.Timer(UPDATE_INTERVAL, update_info)
+    # Re-run after certain time
+    update_interval = random.randint(UPDATE_INTERVAL_MIN, UPDATE_INTERVAL_MAX)
+    timer = threading.Timer(update_interval, update_info)
     timer.start()
 
 def get_event_pin(info):

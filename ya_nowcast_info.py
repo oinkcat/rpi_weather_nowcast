@@ -1,8 +1,11 @@
-""" Get weather information from Yandex Nowcast Info """
 # -*- coding: utf-8 -*-
+""" Get weather information from Yandex Nowcast Info """
 import sys
 import os
 import bs4
+import ya_pogoda_request as yp_request
+
+CITY_CODE = 'moscow'
 
 def get_nowcast(city_code):
 	""" Get nowcast information from Yandex Weather """
@@ -16,10 +19,7 @@ def get_nowcast(city_code):
 	return nowcast_alert
 
 def request_content(city_code):
-	url = 'https://yandex.ru/pogoda/{}'.format(city_code)
-	os.system('wget -O pogoda.html {} 2> /dev/null'.format(url))
-
-	return open('./pogoda.html')
+    return yp_request.get_weather_page_content(city_code)
 
 def parse_nowcast(nowcast):
 	time = 1
@@ -53,7 +53,7 @@ def get_info():
 	""" Get current nowcast information """
 
 	try:
-		nowcast_text = get_nowcast(str())
+		nowcast_text = get_nowcast(CITY_CODE)
 		nowcast_info = parse_nowcast(nowcast_text)
 		return {
 			'raw': nowcast_text,
