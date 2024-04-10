@@ -1,4 +1,5 @@
-import ya_nowcast_info as nowcast
+import alt_nowcast_info as nowcast
+#import ya_nowcast_info as nowcast
 import time
 import threading
 import atexit
@@ -12,8 +13,8 @@ PIN_RED = 33
 
 ALL_PINS = [PIN_GREEN, PIN_YELLOW, PIN_RED]
 
-UPDATE_INTERVAL_MIN = 200
-UPDATE_INTERVAL_MAX = 300
+UPDATE_INTERVAL_MIN = 500
+UPDATE_INTERVAL_MAX = 700
 
 STATE = {
     'pins': [],

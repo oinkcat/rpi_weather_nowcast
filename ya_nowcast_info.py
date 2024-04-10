@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """ Get weather information from Yandex Nowcast Info """
+# -*- coding: utf-8 -*-
 import sys
 import os
 import bs4
@@ -19,7 +19,14 @@ def get_nowcast(city_code):
 	return nowcast_alert
 
 def request_content(city_code):
+    # return request_content_cmd(city_code)
     return yp_request.get_weather_page_content(city_code)
+
+def request_content_cmd(city_code):
+	url = 'https://yandex.ru/pogoda/{}'.format(city_code)
+	os.system('elinks -source {} > pogoda.html 2> /dev/null'.format(url))
+
+	return open('./pogoda.html')
 
 def parse_nowcast(nowcast):
 	time = 1

@@ -13,11 +13,11 @@ def get_weather_page_content(city_code):
 
     request = urllib.request.Request(city_page, headers={
         'Accept': '*/*',
-        'User-Agent': 'ELinks/0.12~pre5-9 (textmode; Debian; Linux 4.1.19+ armv6l; 120x30-2)',
-        'Referer': 'https://ya.ru/',
-        'Connection': 'keep-alive',
-        # 'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'en',
+        'User-Agent': 'ELinks/0.15.0 (textmode; Linux 5.16.15-1-MANJARO x86_64; 110x36-2)',
+        'Referer': 'https://dzen.ru/',
+        'Connection': 'close',
+        #'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en,ru',
         'Pragma': 'no-cache'
     })
 
