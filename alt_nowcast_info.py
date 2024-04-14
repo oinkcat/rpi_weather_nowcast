@@ -27,7 +27,7 @@ NC_MAP_TNYS = [175, 176]
 
 B_BOX = [146, 213, 90, 110]
 
-VALUE_THRESHOLD = 300
+VALUE_PCT_THRESHOLD = 5
 
 def main_test():
     print('Testing: downloading images...')
@@ -58,14 +58,14 @@ def get_info():
             return None
         
         # Process values into time and event
-        going_now = image_values[0] > VALUE_THRESHOLD
+        going_now = image_values[0] > VALUE_PCT_THRESHOLD
         
         total_time = 0
         changing = False
         
         for val in image_values[1:]:
             total_time += 10
-            is_going = val > VALUE_THRESHOLD
+            is_going = val > VALUE_PCT_THRESHOLD
             if is_going != going_now:
                 changing = True
                 break
@@ -162,6 +162,7 @@ def process_nowcast_images(top_y, bottom_y, num_images):
     """ Process nowcast images' pixels """
 
     image_values = list()
+    max_value = B_BOX[2] * B_BOX[3]
 
     for n in range(0, num_images):
         with Image.open(get_image_path(top_y, n)) as top_tile:
@@ -181,7 +182,8 @@ def process_nowcast_images(top_y, bottom_y, num_images):
                          p = 255 - gray_image.getpixel((x, y))
                          value += 1 if p > 15 else 0
             
-                image_values.append(value)
+                value_pct = int(value * 100 / max_value)
+                image_values.append(value_pct)
               
     return image_values
 
@@ -191,4 +193,4 @@ def get_image_path(y, n):
     return os.path.join(IMAGES_DIR, 'nc_{0}_{1}.png'.format(y, n))
 
 if __name__ == '__main__':
-    main_test()
+    print(get_info())
